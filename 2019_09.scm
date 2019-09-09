@@ -274,4 +274,100 @@
 
 ;;;; 1.3.2 constructing procedures using lambda
 
+(define (pi-sum a b)
+  (sum (lambda (x) (/ 1.0 (* x (+ x 2))))
+       a
+       (lambda (x) (+ x 4))
+       b))
 
+(define (integral f a b dx)
+  (* (sum f
+          (+ a (/ dx 2.0))
+          (lambda (x) (+ x dx))
+          b)
+     dx))
+
+(define (f x y)
+  (define (f-helper a b)
+    (+ (* x (square a))
+       (* y b)
+       (* a b)))
+  (f-helper (+ 1 (* x y))
+            (- 1 y)))
+
+(define (f x y)
+  ((lambda (a b)
+     (+ (* x (square a))
+        (* y b)
+        (* a b)
+        (* x y)))
+   (+ 1 (* x y))
+   (- 1 y)))
+
+(define (f x y)
+  (let ((a (+ 1 (* x y)))
+        (b (- 1 y)))
+    (+ (* x (square a))
+       (* y b)
+       (* a b))))
+
+;;;; 1.3.3 procedures as general methods
+
+(define (search f neg-point pos-point)
+  (let ((midpoint (average neg-point pos-point)))
+    (if (close-enough? neg-point pos-point)
+        midpoint
+        (let ((test-value (f midpoint)))
+          (cond ((positive? test-value)
+                 (search f neg-point midpoint))
+                ((negative? test-value)
+                 (search f midpoint pos-point))
+                (else midpoint))))))
+
+(define (close-enough? x y)
+  (< (abs (- x y)) 0.001))
+
+(define (half-interval-method f a b)
+  (let ((a-value (f a))
+        (b-value (f b)))
+    (cond ((and (negative? a-value) (positive? b-value))
+           (search f a b))
+          ((and (negative? b-value) (positive? a-value))
+           (search f b a))
+          (else
+           (error "Values are not of opposite sign" a b)))))
+
+(define tolerance 0.00001)
+(define (fixed-point f first-guess)
+  (define (close-enough? v1 v2)
+    (< (abs (- v1 v2)) tolerance))
+  (define (try guess)
+    (let ((next (f guess)))
+      (if (close-enough? guess next)
+          next
+          (try next))))
+  (try first-guess))
+
+(define (sqrt x)
+  (fixed-point (lambda (y) (average y (/ x y)))
+               1.0))
+
+;;;; exercises
+
+;;;;; 1.37
+
+(define (cont-frac n d k)
+  (if (= k 1)
+      (/ (n k) (d k))
+      (/ (n k)
+         (+ (d k) (cont-frac n d (- k 1))))))
+
+(define (cont-frac n d k)
+  (define (iter result i)
+    (if (= i 0)
+        result
+        (iter (/ (n i) (+ (d i) result))
+              (- i 1))))
+  (iter (/ (n k) (d k)) (- k 1)))
+
+;;;; procedures as returned values
