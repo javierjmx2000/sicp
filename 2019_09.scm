@@ -424,3 +424,76 @@
 (define (double f)
   (lambda (x)
     (f (f x))))
+
+;;;;; 1.42
+
+(define (compose f g)
+  (lambda (x)
+    (f (g x))))
+
+;;;;; 1.43
+
+(define (repeated f n)
+  (if (= n 1)
+      f
+      (compose f (repeated f (- x 1)))))
+
+(define (smooth f dx)
+  (lambda (x)
+    (/ (+ (f (- x dx))
+          (f x)
+          (f (+ x dx)))
+       3)))
+
+(define (n-fold-smooth f dx n)
+  (repeated (smooth f dx) n))
+
+;;;;; 1.46
+
+(define (iterative-improve good-enough? improve-guess)
+  (define (iter guess)
+    (if (good-enough? guess)
+        guess
+        (iter (improve-guess guess))))
+  iter)
+
+(define (sqrt x)
+  ((iterative-improve (lambda (guess)
+                        (< (abs (- (square guess) x))
+                           0.001))
+                      (lambda (guess)
+                        (average guess (/ x guess))))
+   1.0))
+
+(define (fixed-point f guess)
+  ((iterative-improve (lambda (guess)
+                        (< (abs (- (f guess) guess))
+                           0.00001))
+                      (lambda (guess)
+                        (f guess)))
+   guess))
+
+
+;; chapter 2
+
+;;; 2.1 introduction to data abstraction
+
+;;;; 2.1.1 example: arithmetic operations for rational numbers
+
+(define (add-rat x y)
+  (make-rat (+ (* (numer x) (denom y))
+               (* (numer y) (denom x)))
+            (* (denom x) (denom y))))
+(define (sub-rat x y)
+  (make-rat (- (* (numer x) (denom y))
+               (* (numer y) (denom x)))
+            (* (denom x) (denom y))))
+(define (mul-rat x y)
+  (make-rat (* (numer x) (numer y))
+            (* (denom x) (denom y))))
+(define (div-rat x y)
+  (make-rat (* (numer x) (denom y))
+            (* (denom x) (numer y))))
+(define (equal-rat? x y)
+  (= (* (numer x) (denom y))
+     (* (numer y) (denom x))))
