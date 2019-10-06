@@ -15,13 +15,13 @@
 
 ;; 2.7
 
-(define (upper-bound x) (car x))
-(define (lower-bound x) (cdr x))
+(define (lower-bound x) (car x))
+(define (upper-bound x) (cdr x))
 
 
 ;; 2.8
 
-(define (sub-internal x y)
+(define (sub-interval x y)
   (make-interval (- (lower-bound y) (lower-bound x))
                  (- (upper-bound y) (upper-bound x))))
 
@@ -45,3 +45,20 @@
         (p4 (* (upper-bound x) (upper-bound y))))
     (make-interval (min p1 p2 p3 p4)
                    (max p1 p2 p3 p4))))
+
+
+;; 2.12
+
+(define (make-center-percent c p)
+  (let ((delta (* c p)))
+    (make-interval (- c delta) (+ c delta))))
+
+(define (center x)
+  (+ (lower-bound x)
+     (/ (- (upper-bound x) (lower-bound x))
+        2)))
+
+(define (percent x)
+  (let ((c (center x)))
+    (/ (- (upper-bound x) c)
+       c)))
