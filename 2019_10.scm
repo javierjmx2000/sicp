@@ -11,3 +11,8 @@
             (1+ count)
             (/ x n))
       count))
+
+;; 2.7
+
+(define (upper-bound x) (car x))
+(define (lower-bound x) (cdr x))
