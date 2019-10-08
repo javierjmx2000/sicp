@@ -62,3 +62,11 @@
   (let ((c (center x)))
     (/ (- (upper-bound x) c)
        c)))
+
+
+;; 2.17
+
+(define (last-pair l)
+  (if (= (length l) 1)
+      l
+      (last-pair (cdr l))))
