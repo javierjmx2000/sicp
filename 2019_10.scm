@@ -99,3 +99,15 @@
 (define except-first-denomination cdr)
 
 (define first-denomination car)
+
+
+;; 2.20
+
+(define (same-parity x . xs)
+  (define (iter xs)
+    (if (null? xs)
+        (list)
+        (if (= (remainder x 2) (remainder (car xs) 2))
+            (cons (car xs) (iter (cdr xs)))
+            (iter (cdr xs)))))
+  (cons x (iter xs)))
