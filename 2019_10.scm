@@ -70,3 +70,12 @@
   (if (= (length l) 1)
       l
       (last-pair (cdr l))))
+
+
+;; 2.18
+
+(define (reverse l)
+  (if (null? l)
+      l
+      (append (reverse (cdr l))
+              (list (car l)))))
