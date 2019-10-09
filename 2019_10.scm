@@ -132,3 +132,14 @@
         (else (proc (car items))
               (for-each proc (cdr items)))))
 
+
+;; 2.27
+
+(define (deep-reverse xs)
+  (if (null? xs)
+      xs
+      (append (deep-reverse (cdr xs))
+              (list
+               (if (pair? (car xs))
+                   (deep-reverse (car xs))
+                   (car xs))))))
