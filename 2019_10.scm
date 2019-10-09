@@ -123,3 +123,12 @@
 
 (define (square-list items)
   (map square items))
+
+
+;; 2.23
+
+(define (for-each proc items)
+  (cond ((null? items) (list))
+        (else (proc (car items))
+              (for-each proc (cdr items)))))
+
