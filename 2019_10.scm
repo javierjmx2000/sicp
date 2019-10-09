@@ -111,3 +111,15 @@
             (cons (car xs) (iter (cdr xs)))
             (iter (cdr xs)))))
   (cons x (iter xs)))
+
+
+;; 2.21
+
+(define (square-list items)
+  (if (null? items)
+      (list)
+      (cons (square (car items))
+            (square-list (cdr items)))))
+
+(define (square-list items)
+  (map square items))
