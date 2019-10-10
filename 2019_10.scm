@@ -143,3 +143,12 @@
                (if (pair? (car xs))
                    (deep-reverse (car xs))
                    (car xs))))))
+
+
+;; 2.28
+
+(define (fringe x)
+  (cond ((null? x) x)
+        ((not (pair? x)) (list x))
+        (else (append (fringe (car x))
+                      (fringe (cdr x))))))
