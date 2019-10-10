@@ -152,3 +152,50 @@
         ((not (pair? x)) (list x))
         (else (append (fringe (car x))
                       (fringe (cdr x))))))
+
+
+;; 2.29
+
+(define (make-mobile left right)
+  (list left right))
+
+(define (make-branch length structure)
+  (list length structure))
+
+(define mobile-left-branch car)
+
+(define (mobile-right-branch m)
+  (car (cdr m)))
+
+(define branch-length car)
+
+(define (branch-structure b)
+  (car (cdr b)))
+
+(define (branch-weight b)
+  (let ((s (structure b)))
+    (if (not (pair? s))
+        s
+        (mobile-total-weight s))))
+
+(define (mobile-total-weight m)
+  (+ (branch-weight (mobile-left-branch m))
+     (branch-weight (mobile-right-branch m))))
+
+(define (branch-torque b)
+  (* (branch-length b)
+     (branch-weight b)))
+
+(define (branch-balanced? b)
+  (let ((s (branch-structure b)))
+    (if (not (pair? s))
+        #t
+        (mobile-balanced? s))))
+
+(define (mobile-balanced? m)
+  (let ((l (mobile-left-branch m))
+        (r (mobile-right-branch m)))
+    (and (= (branch-torque l)
+            (branch-torque r))
+         (branch-balanced? l)
+         (branch-balanced? r))))
