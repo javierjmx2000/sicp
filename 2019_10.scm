@@ -225,3 +225,15 @@
              (tree-map proc sub-tree)
              (proc sub-tree)))
        tree))
+
+
+;; 2.32
+
+(define (subsets s)
+  (if (null? s)
+      (list (list))
+      (let ((rest (subsets (cdr s))))
+        (display rest)
+        (newline)
+        (append rest (map (lambda (x) (cons (car s) x))
+                          rest)))))
