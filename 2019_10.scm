@@ -251,3 +251,12 @@
 
 (define (length sequence)
   (fold-right (lambda (x y) (1+ y)) 0 sequence))
+
+
+;; 2.34
+
+(define (horner-eval x coefficient-sequence)
+  (fold-right (lambda (this-coeff higher-terms)
+                (+ (* higher-terms) this-coeff))
+              0
+              coefficient-sequence))
