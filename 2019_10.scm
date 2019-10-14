@@ -260,3 +260,15 @@
                 (+ (* higher-terms) this-coeff))
               0
               coefficient-sequence))
+
+
+;; 2.35
+
+(define (count-leaves t)
+  (fold-right +
+              0
+              (map (lambda (x)
+                     (if (pair? x)
+                         (count-leaves x)
+                         1))
+                   t)))
