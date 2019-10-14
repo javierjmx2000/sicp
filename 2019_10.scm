@@ -281,3 +281,19 @@
       (list)
       (cons (fold-right op init (map car seqs))
             (accumulate-n op init (map cdr seqs)))))
+
+
+;; 2.37
+
+(define (dot-product v w)
+  (fold-right + 0 (map * v w)))
+
+(define (matrix-*-vector m v)
+  (map (lambda (w) (dot-product v w)) m))
+
+(define (transpose mat)
+  (accumulate-n cons (list) mat))
+
+(define (matrix-*-matrix m n)
+  (let ((cols (transpose n)))
+    (map (lambda (v) (matrix-*-vector cols v)) m)))
