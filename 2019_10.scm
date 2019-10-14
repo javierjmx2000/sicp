@@ -297,3 +297,12 @@
 (define (matrix-*-matrix m n)
   (let ((cols (transpose n)))
     (map (lambda (v) (matrix-*-vector cols v)) m)))
+
+
+;; 2.39
+
+(define (reverse sequence)
+  (fold-right (lambda (x y) (append y (list x))) (list) sequence))
+
+(define (reverse sequence)
+  (fold-left (lambda (x y) (cons y x)) (list) sequence))
