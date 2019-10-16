@@ -320,3 +320,23 @@
   (map make-pair-sum
        (filter prime-sum?
                (unique-pairs n))))
+
+
+;; 2.41
+
+(define (ordered-pairs n)
+  (append-map (lambda (i)
+                (map (lambda (j) (list j i))
+                     (iota (- i 1) 1)))
+              (iota n 1)))
+
+(define (ordered-triples n)
+  (append-map (lambda (i)
+                (map (lambda (p)
+                       (append p (list (1+ i))))
+                     (ordered-pairs i)))
+              (iota (- n 2) 2)))
+
+(define (solution n s)
+  (filter (lambda (t) (= s (apply + t)))
+          (ordered-triples n)))
