@@ -340,3 +340,27 @@
 (define (solution n s)
   (filter (lambda (t) (= s (apply + t)))
           (ordered-triples n)))
+
+
+;; 2.42
+
+(define (queens board-size)
+  (define (queen-cols k)
+    (if (= k 0)
+        (list empty-board)
+        (filter
+         (lambda (positions) (safe? k positions))
+         (append-map
+          (lambda (rest-of-queens)
+            (map (lambda (new-row)
+                   (adjoin-position new-row k rest-of-queens))
+                 (iota board-size 1)))
+          (queen-cols (-1+ k))))))
+  (queen-cols board-size))
+
+(define empty-board (list))
+
+(define (adjoin-position row col positions)
+  (cons (list row col) positions))
+
+(define (safe? col positions) #t)
