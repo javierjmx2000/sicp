@@ -306,3 +306,17 @@
 
 (define (reverse sequence)
   (fold-left (lambda (x y) (cons y x)) (list) sequence))
+
+
+;; 2.40
+
+(define (unique-pairs n)
+  (append-map (lambda (i)
+                (map (lambda (j) (list i j))
+                     (iota (- i 1) 1)))
+              (iota n 1)))
+
+(define (prime-sum-pairs n)
+  (map make-pair-sum
+       (filter prime-sum?
+               (unique-pairs n))))
