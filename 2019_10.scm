@@ -233,8 +233,6 @@
   (if (null? s)
       (list (list))
       (let ((rest (subsets (cdr s))))
-        (display rest)
-        (newline)
         (append rest (map (lambda (x) (cons (car s) x))
                           rest)))))
 
@@ -363,4 +361,14 @@
 (define (adjoin-position row col positions)
   (cons (list row col) positions))
 
-(define (safe? col positions) #t)
+(define (safe? col positions)
+  (define (queens-safe? q1 q2)
+    (not (or (= (car q1) (car q2))
+             (= (abs (- (car q1) (car q2)))
+                (abs (- (cadr q1) (cadr q2)))))))
+  (let ((new-queen (car positions))
+        (rest (cdr positions)))
+    (fold-right (lambda (pos res)
+                  (and res (queens-safe? new-queen pos)))
+                #t
+                rest)))
