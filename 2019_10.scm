@@ -377,10 +377,6 @@
 ;; 2.56
 
 (define (deriv exp var)
-  (display exp)
-  (display ", ")
-  (display var)
-  (newline)
   (cond ((number? exp) 0)
         ((variable? exp)
          (if (same-variable? exp var) 1 0))
@@ -451,3 +447,20 @@
 (define (multiplier p) (cadr p))
 
 (define (multiplicand p) (caddr p))
+
+
+;; 2.57
+
+(define (augend s)
+  (if (= (length s) 3)
+      (caddr s)
+      (fold-right make-sum
+                  0
+                  (cddr s))))
+
+(define (multiplicand p)
+  (if (= (length p) 3)
+      (caddr p)
+      (fold-right make-product
+                  1
+                  (cddr p))))
