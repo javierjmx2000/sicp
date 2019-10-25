@@ -478,3 +478,18 @@
 
 (define augend caddr)
 
+
+;; 2.59
+
+(define (union-set s1 s2)
+  (cond ((null? s1) s2)
+        ((null? s2) s1)
+        ((element-of-set? (car s1) s2)
+         (union-set (cdr s1) s2))
+        (else
+         (cons (car s1) (union-set (cdr s1) s2)))))
+
+(define (element-of-set? x set)
+  (cond ((null? set) false)
+        ((equal? x (car set)) true)
+        (else (element-of-set? x (cdr set)))))
