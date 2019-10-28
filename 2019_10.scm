@@ -517,3 +517,13 @@
          (adjoin-set (car s1)
                      (intersection-set (cdr s1) s2)))
         (else (intersection-set (cdr s1) s2))))
+
+
+;; 2.61
+
+(define (adjoin-set x set)
+  (cond ((or (null? set) (< x (car set)))
+         (cons x set))
+        ((> x (car set))
+         (cons (car set) (adjoin-set x (cdr set))))
+        (else set)))
